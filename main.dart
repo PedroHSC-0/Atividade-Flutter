@@ -1,56 +1,52 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'componente.dart';
 
 void main() {
-  runApp(Aula());
+  runApp(Ativ());
 }
 
-class Aula extends StatefulWidget {
+class Ativ extends StatefulWidget {
+  const Ativ({super.key});
+
   @override
-  State<Aula> createState() => _AulaState();
+  State<Ativ> createState() => _AtivState();
 }
 
-class _AulaState extends State<Aula> {
-  var contagem = 0;
+class _AtivState extends State<Ativ> {
+  var cor_caixa = Colors.white;
 
-  final perguntas = [
-    "Qual seu artista preferido?",
-    "Qual sua música preferida?",
-    "Qual sua Comida preferida?",
-    "1",
-    "2",
-    "5",
-    "5",
-    "0"
-  ];
-
-  void click() {
+  void mudar_a_cor(Color cor) {
     setState(() {
-      contagem:
-      contagem++;
+      cor_caixa = cor;
     });
-    print(contagem);
   }
 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text("Primeiro App interativo"),
-            ),
-            body: Column(
-              children: [
-                Text(perguntas[contagem]),
-                ElevatedButton(onPressed: click, child: Text("Clique aqui")),
-                ElevatedButton(
-                    // função anônima
-                    onPressed: () {
-                      print("outra função");
-                    },
-                    child: Text('Clique aqui')),
-                ElevatedButton(
-                    onPressed: () => print("Função arrow"),
-                    child: Text("Clique aqui"))
-              ],
-            )));
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Atividade Flutter'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              ElevatedButton(
+                  onPressed: () => mudar_a_cor(Colors.blue),
+                  child: Text('azul')),
+              ElevatedButton(
+                  onPressed: () => mudar_a_cor(Colors.green),
+                  child: Text('verde')),
+              ElevatedButton(
+                  onPressed: () => mudar_a_cor(Colors.black),
+                  child: Text('preto')),
+              componente(cor_caixa)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
