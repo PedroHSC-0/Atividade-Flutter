@@ -1,52 +1,76 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:atividades/questionario.dart';
 import 'package:flutter/material.dart';
-import 'componente.dart';
+import './questao.dart';
+import './resposta.dart';
 
-void main() {
-  runApp(Ativ());
+main() {
+  runApp(const Componentes());
 }
 
-class Ativ extends StatefulWidget {
-  const Ativ({super.key});
+class Componentes extends StatefulWidget {
+  const Componentes({super.key});
 
   @override
-  State<Ativ> createState() => _AtivState();
+  State<Componentes> createState() => _ComponentesState();
 }
 
-class _AtivState extends State<Ativ> {
-  var cor_caixa = Colors.white;
+class _ComponentesState extends State<Componentes> {
+  var perguntaAtual = 0;
+  var cor = Colors.white;
+  var respostasFinal = [];
 
-  void mudar_a_cor(Color cor) {
+  final List<Map<String, Object>> questionario = [
+    {
+      "pergunta": "Qual a sua cor favorita?",
+      "respostas": ["Amarelo", "Preto", "Branco", "Azul", "Vermelho"]
+    },
+    {
+      "pergunta": "Qual é seu animal favorito?",
+      "respostas": ["Cachorro", "Gato", "Tartaruga", "Periquito"]
+    },
+    {
+      "pergunta": "Qual sua linguagem favorita?",
+      "respostas": ["Python", "Java", "JavaScript"]
+    },
+  ];
+
+  bool get temPergunta {
+    return perguntaAtual < questionario.length;
+  }
+
+  void acao() {
     setState(() {
-      cor_caixa = cor;
+      respostasFinal.add(questionario[perguntaAtual]);
+      perguntaAtual++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> respostas = [];
+
+    if (temPergunta) {
+      for (var resposta
+          in questionario[perguntaAtual]["respostas"] as List<String>) {
+        respostas.add(
+          Resposta(resposta, acao),
+        );
+      }
+    }
+
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Atividade Flutter'),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              ElevatedButton(
-                  onPressed: () => mudar_a_cor(Colors.blue),
-                  child: Text('azul')),
-              ElevatedButton(
-                  onPressed: () => mudar_a_cor(Colors.green),
-                  child: Text('verde')),
-              ElevatedButton(
-                  onPressed: () => mudar_a_cor(Colors.black),
-                  child: Text('preto')),
-              componente(cor_caixa)
-            ],
-          ),
-        ),
+        home: Scaffold(
+      appBar: AppBar(
+        title: temPergunta
+            ? Questao(questionario[perguntaAtual]["pergunta"].toString())
+            : const Questao("Terminou"),
       ),
-    );
+      body: temPergunta
+          ? Questionario(
+              perguntas: questionario,
+              perguntaAtual: perguntaAtual,
+              onRespostaSelecionada: acao)
+          : const Text('Resultado'),
+    ));
   }
 }
