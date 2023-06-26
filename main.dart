@@ -1,5 +1,6 @@
-import 'package:atividades/questionario.dart';
 import 'package:flutter/material.dart';
+import 'package:prova_pedro/questionario.dart';
+import 'package:prova_pedro/resultado.dart';
 import './questao.dart';
 import './resposta.dart';
 
@@ -40,7 +41,7 @@ class _ComponentesState extends State<Componentes> {
 
   void acao() {
     setState(() {
-      respostasFinal.add(questionario[perguntaAtual]);
+      respostasFinal.add(questionario[perguntaAtual]["respostas"]);
       perguntaAtual++;
     });
   }
@@ -70,7 +71,7 @@ class _ComponentesState extends State<Componentes> {
               perguntas: questionario,
               perguntaAtual: perguntaAtual,
               onRespostaSelecionada: acao)
-          : const Text('Resultado'),
+          : Resultado(respostasFinal),
     ));
   }
 }
